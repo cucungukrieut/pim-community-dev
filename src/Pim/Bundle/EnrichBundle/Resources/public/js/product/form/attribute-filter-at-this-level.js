@@ -15,21 +15,21 @@ define(
              * @returns {String}
              */
             getCode() {
-                return 'all';
+                return 'at-this-level';
             },
 
             /**
              * @returns {String}
              */
             getLabel() {
-                return __('pim_enrich.form.product.tab.attributes.attribute_filter.all');
+                return __('pim_enrich.form.product.tab.attributes.attribute_filter.at_this_level');
             },
 
             /**
              * @returns {Boolean}
              */
             isVisible() {
-                return true;
+                return this.getFormData().meta.attributes_for_this_level;
             },
 
             /**
@@ -38,7 +38,9 @@ define(
              * @returns {Promise}
              */
             filterValues(values) {
-                return $.Deferred().resolve(values).promise();
+                const valuesToFill = _.pick(values, this.getFormData().meta.attributes_for_this_level);
+
+                return $.Deferred().resolve(valuesToFill).promise();
             }
         });
     }

@@ -43,9 +43,11 @@ define(
                 const currentFilter = this.getCurrentFilter();
 
                 this.$el.html(this.template({
-                    filters: this.getFilters().map((filter) => {
-                        return { code: filter.getCode(), label: filter.getLabel() };
-                    }),
+                    filters: this.getFilters()
+                        .filter(filter => 'function' !== typeof(filter.isVisible) || filter.isVisible())
+                        .map((filter) => {
+                            return { code: filter.getCode(), label: filter.getLabel() };
+                        }),
                     currentFilter: { code: currentFilter.getCode(), label: currentFilter.getLabel() },
                     __: __
                 }));
