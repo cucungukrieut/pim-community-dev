@@ -4,6 +4,7 @@
 
 - GITHUB-7507: Fix XLSX product export to allow decimal separator configuration (Thanks [wa-daniel-fahl](https://github.com/wa-daniel-fahl)!
 - PIM-7069: Fix Channel export regarding conversion_units output
+- GITHUB-7750: Fix the fatal error when having violations during a bulk action on families (Thanks [FabienSalles](https://github.com/FabienSalles)!)
 
 # 1.7.19 (2018-02-27)
 
