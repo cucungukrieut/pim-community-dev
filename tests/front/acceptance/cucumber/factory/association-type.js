@@ -15,6 +15,18 @@ function createLabels({
     return labels;
 }
 
+/**
+ * Generate an association type
+ *
+ * Example:
+ *
+ * const createAssociationType = require('../../factory/association-type');
+ * createAssociationType('Similar', { en_AU: 'Simila })
+ *
+ * @param {String} code
+ * @param {Object} locales
+ * @returns {Object}
+ */
 module.exports = (
     code = 'code',
     locales = {
