@@ -5,6 +5,7 @@
 - PIM-7251: Fix history date on all grids (except product grid)
 - PIM-7275: Fix regression on group products grid filters
 - PIM-6962: Fix breadcrumb links issue after the save on the edit page
+- PIM-7263: (BACKPORT for 2.0) Create a purging command (`pim:catalog:remove-wrong-boolean-values-on-variant-products`) for boolean values on variant products that should belong to parents
 
 # 2.0.20 (2018-03-29)
 
