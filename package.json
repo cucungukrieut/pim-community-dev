@@ -7,6 +7,8 @@
     "webpack": "webpack --config webpack.config.js --env=prod",
     "webpack-dev": "webpack --config webpack.config.js",
     "webpack-watch": "webpack --progress --config webpack.config.js --watch",
+    "prettier": "prettier --config .prettierrc.json --parser typescript --write \"./src/**/*.ts\";",
+    "before-commit": "yarn prettier && yarn lint",
     "lint": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet",
     "lint-fix": "node ./node_modules/eslint/bin/eslint 'src/**/*.js' --ignore-path .eslintignore --quiet --fix"
   },
@@ -21,7 +23,8 @@
   "devDependencies": {
     "colors": "1.1.2",
     "dep-diff": "1.0.1",
-    "read-pkg": "2.0.0"
+    "read-pkg": "2.0.0",
+    "prettier": "^1.10.2"
   },
   "dependencies": {
     "@types/node": "^9.6.1",
