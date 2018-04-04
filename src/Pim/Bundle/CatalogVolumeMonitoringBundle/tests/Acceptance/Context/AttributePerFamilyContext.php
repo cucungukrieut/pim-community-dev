@@ -5,16 +5,12 @@ declare(strict_types=1);
 namespace Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context;
 
 use Behat\Behat\Context\Context;
-use Behat\Behat\Context\SnippetAcceptingContext;
 use Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery;
 use Pim\Component\CatalogVolumeMonitoring\Volume\Normalizer;
 use Webmozart\Assert\Assert;
 
-final class AttributePerFamilyContext implements Context, SnippetAcceptingContext
+final class AttributePerFamilyContext implements Context
 {
-    /** @var array */
-    private $limits = [];
-
     /** @var array */
     private $familiesNumbers = [];
 
@@ -28,7 +24,8 @@ final class AttributePerFamilyContext implements Context, SnippetAcceptingContex
     private $inMemoryQuery;
 
     /**
-     * @param Normalizer\Volumes $volumesNormalizer
+     * @param Normalizer\Volumes      $volumesNormalizer
+     * @param InMemoryAverageMaxQuery $inMemoryQuery
      */
     public function __construct(Normalizer\Volumes $volumesNormalizer, InMemoryAverageMaxQuery $inMemoryQuery)
     {
@@ -45,9 +42,9 @@ final class AttributePerFamilyContext implements Context, SnippetAcceptingContex
     }
 
     /**
-     * @When the administrator user asks for the catalog volume monitoring report
+     * @When the administrator user asks for the report to monitor the number of attributes per family
      */
-    public function theAdministratorUserAsksForTheCatalogVolumeMonitoringReport()
+    public function theAdministratorUserAsksForTheReportToMonitorTheNumberOfAttributesPerFamily()
     {
         $this->inMemoryQuery->setAverageVolume(array_sum($this->familiesNumbers) / count($this->familiesNumbers));
         $this->inMemoryQuery->setMaxVolume(max($this->familiesNumbers));

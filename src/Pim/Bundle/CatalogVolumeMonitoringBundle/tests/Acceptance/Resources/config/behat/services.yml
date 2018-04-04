@@ -6,3 +6,11 @@ services:
             - '@__symfony__.pim_volume_monitoring.persistence.query.attributes_per_family'
         tags:
             - { name: fob.context_service }
+
+    test.catalog_volume_limits.product_context:
+        class: 'Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Context\ProductContext'
+        arguments:
+            - '@__symfony__.pim_volume_monitoring.volume.normalizer.volumes'
+            - '@__symfony__.pim_volume_monitoring.persistence.query.products'
+        tags:
+            - { name: fob.context_service }

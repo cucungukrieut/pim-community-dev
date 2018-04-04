@@ -1,10 +1,18 @@
 parameters:
-    pim_volume_monitoring.persistence.query.attributes_per_family.class: Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery
+    pim_volume_monitoring.persistence.query.in_memory_average_max.class: Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryAverageMaxQuery
+    pim_volume_monitoring.persistence.query.in_memory_count.class: Pim\Bundle\CatalogVolumeMonitoringBundle\tests\Acceptance\Persistence\Query\InMemory\InMemoryCountQuery
 
 services:
     pim_volume_monitoring.persistence.query.attributes_per_family:
-        class: '%pim_volume_monitoring.persistence.query.attributes_per_family.class%'
+        class: '%pim_volume_monitoring.persistence.query.in_memory_average_max.class%'
         arguments:
             - 'attributes_per_family'
         tags:
             - { name: pim_volume_monitoring.persistence.average_max_query }
+
+    pim_volume_monitoring.persistence.query.products:
+        class: '%pim_volume_monitoring.persistence.query.in_memory_count.class%'
+        arguments:
+            - 'products'
+        tags:
+            - { name: pim_volume_monitoring.persistence.count_query }

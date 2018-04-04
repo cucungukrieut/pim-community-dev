@@ -7,7 +7,7 @@ Feature: Monitor catalog volume
   Scenario: Monitor the number of attributes per family
     Given a family with 10 attributes
     And a family with 4 attributes
-    When the administrator user asks for the catalog volume monitoring report
+    When the administrator user asks for the report to monitor the number of attributes per family
     Then the report returns that the average number of attributes per family is 7
     And the report returns that the maximum number of attributes per family is 10
 
@@ -16,5 +16,5 @@ Feature: Monitor catalog volume
     Given a family with 8 attributes
     And a family with 2 attributes
     And the limit of the number of attributes per family is set to 6
-    When the administrator user asks for the catalog volume monitoring report
+    When the administrator user asks for the report to monitor the number of attributes per family
     Then the report warns the users that the number of attributes per family is high
