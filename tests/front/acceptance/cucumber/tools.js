@@ -1,12 +1,12 @@
-const maxRandomLatency =
-  undefined !== process.env.MAX_RANDOM_LATENCY_MS ? parseInt(process.env.MAX_RANDOM_LATENCY_MS) : 1000;
+const random = process.env.RANDOM_LATENCY || true;
+const maxRandomLatency = undefined !== process.env.MAX_RANDOM_LATENCY_MS ? process.env.MAX_RANDOM_LATENCY_MS : 1000;
 
-const answer = (methodToDelay, randomLatency = true, customMaxRandomLatency = maxRandomLatency) => {
-    setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * customMaxRandomLatency);
+const answer = (methodToDelay, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
+    setTimeout(methodToDelay, (randomLatency ? Math.random() : 1) * parseInt(customMaxRandomLatency));
 };
 
-const answerJson = (request, response, randomLatency = true, customMaxRandomLatency = maxRandomLatency) => {
-    answer(() => request.respond(json(response)), randomLatency, customMaxRandomLatency);
+const answerJson = (request, response, randomLatency = random, customMaxRandomLatency = maxRandomLatency) => {
+    answer(() => request.respond(json(response)), randomLatency, parseInt(customMaxRandomLatency));
 };
 
 const json = body => ({

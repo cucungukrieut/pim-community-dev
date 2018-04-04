@@ -172,3 +172,31 @@ To launch the tests and generate a html report:
 Note: If you are using yarn <1.0 you must add `--` before the feature name:
 
 > `yarn run acceptance -- tests/front/acceptance/features/association-type/edit.feature:2`
+
+You can also run the tests with two additional options -
+- `RANDOM_LATENCY` - (default `true`)
+- `MAX_RANDOM_LATENCY_MS` - (default `1000`)
+
+These options can add a degree of randomness to your tests for loading the page and responding to JSON requests with custom data. For example, we can launch the test like this:
+
+> `RANDOM_LATENCY=true MAX_RANDOM_LATENCY_MS=2000 yarn run acceptance tests/front/acceptance/features/`
+
+And the following step definition:
+```javascript
+    const  { answerJson, csvToArray } = require('../../tools');
+
+    // A step definition that hijacks the request for locales and returns custom locales
+    Given('the locales {string}', async function(csvLocaleCodes) {
+        const locales = csvToArray(csvLocaleCodes).map(localeCode => createLocale(localeCode));
+
+        // Hijack the page request
+        this.page.on('request', request => {
+            if (request.url().includes('/configuration/locale/rest')) {
+                // Answer the request with our custom data
+                answerJson(request, locales);
+            }
+        });
+    });
+```
+
+Within the `answerJson` method we use the `RANDOM_LATENCY` and `MAX_RANDOM_LATENCY_MS` options to define the maximum time delay that the method will take to respond to the request.
