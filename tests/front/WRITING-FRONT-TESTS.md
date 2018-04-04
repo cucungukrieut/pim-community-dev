@@ -8,20 +8,20 @@ The frontend acceptance tests are run with [cucumber-js]() for the scenarios and
 
 #### 1. Make a dump of the form extensions using the FormExtensionProvider
 
-In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `bin/console pim:installer:dump-extensions` and it will output a file at `web/test_dist/extensions.json`. 
+In our acceptance test definitions we can capture network requests called by the app and replace them with custom fixtures. When the app calls the form extensions endpoint we will return this dump. To create this dump, run `bin/console pim:installer:dump-extensions` and it will output a file at `web/test_dist/extensions.json`.
 
 #### 2. Use webpack to create a test version of our frontend bundle
-For this step, we build the app using custom entry points (`index.html` and `index.js` in `webpack/test/templates`). This allows us to replace the normal `index.html.twig` from the EnrichBundle and eventually only render the views that we want instead of the whole app. 
+For this step, we build the app using custom entry points (`index.html` and `index.js` in `webpack/test/templates`). This allows us to replace the normal `index.html.twig` from the EnrichBundle and eventually only render the views that we want instead of the whole app.
 
-We have a custom webpack test config `webpack-test.config.js` that uses the custom entry points and outputs all the built javascript inline inside the `index.html`. 
+We have a custom webpack test config `webpack-test.config.js` that uses the custom entry points and outputs all the built javascript inline inside the `index.html`.
 
-To create the test version of the PIM you can run `yarn run webpack-test`. This will generate in the `web/test_dist` folder a `index.html` file that includes all the frontend code (excluding the CSS). 
+To create the test version of the PIM you can run `yarn run webpack-test`. This will generate in the `web/test_dist` folder a `index.html` file that includes all the frontend code (excluding the CSS).
 
 #### 3. Running the tests
 
 Just like the other frontend commands, we use scripts in package.json to run the acceptance tests.
 
-There are three commands that can be run: 
+There are three commands that can be run:
 - `yarn run acceptance` - This runs the tests normally, using headless chrome (The CI uses this)
 - `yarn run acceptance-debug` - This runs the tests in debug mode, opening a chrome instance and keeping the process open after scenarios are run
 - `yarn run generate-report` - This generates a html report of the last test
@@ -29,7 +29,7 @@ There are three commands that can be run:
 > Note: If you want to run inspect or add breakpoints in the acceptance tests or step definitions you can follow these steps:
     - Add a breakpoint somewhere in your step definition with `debugger;`
     - Run `node --inspect-brk  node_modules/.bin/cucumber-js -r ./webpack/test/acceptance/run-steps.js -r ./tests/front/acceptance/cucumber ./tests/front/acceptance/features/`
-    - Go to `chrome://inspect` in Chrome and click on the target `node_modules/.bin/cucumber-js`. If you don't see it, you can click on `Open dedicated DevTools for Node` instead. An inspector window will open. 
+    - Go to `chrome://inspect` in Chrome and click on the target `node_modules/.bin/cucumber-js`. If you don't see it, you can click on `Open dedicated DevTools for Node` instead. An inspector window will open.
     - Go to the sources tab in the inspector and click the play icon, you should now be able to walk through the steps
 
 The important files and folders are:
@@ -42,7 +42,7 @@ The important files and folders are:
     - After each scenario capture and report the success or failure
     - Generate a screenshot for the scenario failure
     - Close the browser
-- `generate-report.js` - After the tests are run, this file can take the test output json from `web/test_dist/acceptance-js.json` and create a html report. 
+- `generate-report.js` - After the tests are run, this file can take the test output json from `web/test_dist/acceptance-js.json` and create a html report.
 
 > Note: Cucumber normally handles the auto-discovery of steps but this feature doesn't work with the EE. Cucumber unfortunately doesn't support executing step definitions from CE using the cucumber instance from inside the EE node_modules. So we manually gather the step definition files and pass in the cucumber instance.
 
@@ -83,7 +83,7 @@ If you execute `yarn run webpack` with a feature file that has undefined steps, 
            // Write code here that turns the phrase above into concrete actions
            callback(null, 'pending');
          });
-       
+
    ✔ After # tests/front/acceptance/cucumber/world.js:60
 
 3 scenarios (1 undefined, 2 passed)
@@ -115,11 +115,11 @@ module.exports = function(cucumber) {
 
 ```
 
-The step definitions use [cucumber-js](https://github.com/cucumber/cucumber-js) to define the step, [puppeteer](https://github.com/GoogleChrome/puppeteer) to access the page object, and the NodeJs [assert](https://nodejs.org/api/assert.html) library to make the assertions. We also use [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) instead of nested callbacks to make the code more readable as most of the puppeteer page methods are not synchronous. 
+The step definitions use [cucumber-js](https://github.com/cucumber/cucumber-js) to define the step, [puppeteer](https://github.com/GoogleChrome/puppeteer) to access the page object, and the NodeJs [assert](https://nodejs.org/api/assert.html) library to make the assertions. We also use [async/await](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function) instead of nested callbacks to make the code more readable as most of the puppeteer page methods are not synchronous.
 
 #### 3. Methods to generate entity fixtures in `tests/front/acceptance/cucumber/factory`
 
-In almost every case, you will have to generate some dummy data for your scenario. Let's take this example: 
+In almost every case, you will have to generate some dummy data for your scenario. Let's take this example:
 
 ```javascript
 module.exports = function(cucumber) {
@@ -139,8 +139,36 @@ module.exports = function(cucumber) {
 };
 ```
 
-In this step definition, we want to set up the locales for the `Given the locales en_US, fr_FR` step. 
+In this step definition, we want to set up the locales for the `Given the locales en_US, fr_FR` step.
 
 We generate the response with the `createLocale` factory in `tests/front/acceptance/cucumber/factory/locale.js`. This lets us answer the request with our own generated data. Every factory has default dummy data that can be overridden. To view the available factory methods you can check `tests/front/acceptance/cucumber/factory`
 
-Once you have your step definition and feature file, you can execute `yarn run acceptance` to run the tests. 
+Once you have your step definition and feature file, you can execute `yarn run acceptance` to run the tests.
+
+## Launching tests
+
+To launch all the tests:
+
+> `yarn run acceptance ./tests/front/acceptance/features/`
+
+> Note: Running `yarn run acceptance` without specifying the folder, scenario or glob (see: [Running features in Cucumber](https://github.com/cucumber/cucumber-js/blob/master/docs/cli.md#running-specific-features)) will cause it to run every scenario in any `/feature` folder in the repository !
+
+To launch a single test:
+
+> `yarn run acceptance tests/front/acceptance/features/association-type/edit.feature`
+
+To launch a single scenario:
+
+> `yarn run acceptance tests/front/acceptance/features/association-type/edit.feature:2`
+
+To launch the tests with the browser open:
+
+> `yarn run acceptance ./tests/front/acceptance/features/ --world-parameters='{"debug": true}'`
+
+To launch the tests and generate a html report:
+
+> `yarn run acceptance-report`
+
+Note: If you are using yarn <1.0 you must add `--` before the feature name:
+
+> `yarn run acceptance -- tests/front/acceptance/features/association-type/edit.feature:2`

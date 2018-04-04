@@ -180,7 +180,7 @@ stage("Test") {
                     withNode({
                         sh "mkdir -p /tmp/js-acceptance/"
                         try {
-                            sh "cd /home/jenkins/pim && yarn run webpack-test && yarn run acceptance"
+                            sh "cd /home/jenkins/pim && yarn run webpack-test && yarn run acceptance ./tests/front/acceptance/features"
                         } finally {
                             archiveArtifacts allowEmptyArchive: true, artifacts: '/tmp/js-acceptance/*.png'
                         }
