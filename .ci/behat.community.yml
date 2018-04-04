@@ -126,12 +126,19 @@ legacy:
 
 acceptance:
     suites:
-        acceptance:
+        catalog:
             paths:
-                - '%paths.base%/tests/back/features/'
+                - '%paths.base%/tests/features/catalog/'
             contexts_services:
                 - test.locale.context
                 - test.channel.context
+            filters:
+                tags: '@acceptance'
+        volume-monitoring:
+            paths:
+                - '%paths.base%/tests/features/volume-monitoring'
+            contexts_services:
+                - test.catalog_volume_limits.attribute_per_family_context
             filters:
                 tags: '@acceptance'
 
